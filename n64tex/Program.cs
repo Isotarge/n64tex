@@ -7,9 +7,9 @@ namespace n64tex {
 		static string[] formats = {
 			"rgba5551",
 			"i4",
-			// TODO: i8
-			// TODO: ia4
-			// TODO: ia8
+			"i8",
+			"ia4",
+			"ia8",
 			// TODO: ia16
 			// TODO: ci4
 			// TODO: ci8
@@ -94,6 +94,62 @@ namespace n64tex {
 								}
 							}
 							foreach (byte item in i4Data) {
+								writer.Write(item);
+							}
+						}
+
+						if (format == "ia4") {
+							int bytesRequred = (thePNG.Height * thePNG.Width) / 2;
+							byte[] ia4Data = new byte[bytesRequred];
+							int i = 0;
+							int p = 0;
+
+							for (int h = 0; h < thePNG.Height; h++) {
+								for (int w = 0; w < thePNG.Width; w++) {
+									Color pixel = thePNG.GetPixel(w, h);
+									int nibble = ((byte)((int)GetIntensity(pixel) / 32) << 1) + (pixel.A > 0 ? 1 : 0);
+									if (i % 2 == 0) {
+										ia4Data[p] = (byte)(nibble << 4);
+									} else {
+										ia4Data[p] |= (byte)nibble;
+										p++;
+									}
+									i++;
+								}
+							}
+							foreach (byte item in ia4Data) {
+								writer.Write(item);
+							}
+						}
+
+						if (format == "i8") {
+							int bytesRequred = (thePNG.Height * thePNG.Width);
+							byte[] i8Data = new byte[bytesRequred];
+							int i = 0;
+
+							for (int h = 0; h < thePNG.Height; h++) {
+								for (int w = 0; w < thePNG.Width; w++) {
+									Color pixel = thePNG.GetPixel(w, h);
+									i8Data[i++] = (byte)GetIntensity(pixel);
+								}
+							}
+							foreach (byte item in i8Data) {
+								writer.Write(item);
+							}
+						}
+
+						if (format == "ia8") {
+							int bytesRequred = (thePNG.Height * thePNG.Width);
+							byte[] ia8Data = new byte[bytesRequred];
+							int i = 0;
+
+							for (int h = 0; h < thePNG.Height; h++) {
+								for (int w = 0; w < thePNG.Width; w++) {
+									Color pixel = thePNG.GetPixel(w, h);
+									ia8Data[i++] = (byte)((((int)GetIntensity(pixel) / 16) << 4) + (pixel.A / 16));
+								}
+							}
+							foreach (byte item in ia8Data) {
 								writer.Write(item);
 							}
 						}
