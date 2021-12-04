@@ -34,15 +34,15 @@ namespace n64tex {
 				return;
 			}
 
-			if (!File.Exists(Path.GetDirectoryName(filename) + "\\" + Path.GetFileName(filename))) {
+			if (!File.Exists(Path.GetDirectoryName(filename) + Path.DirectorySeparatorChar + Path.GetFileName(filename))) {
 				Console.WriteLine("The file " + filename + " does not exist");
 				return;
 			}
 
-			Bitmap thePNG = new Bitmap(Path.GetDirectoryName(filename) + "\\" + Path.GetFileName(filename));
+			Bitmap thePNG = new Bitmap(Path.GetDirectoryName(filename) + Path.DirectorySeparatorChar + Path.GetFileName(filename));
 
 			// Delete the file if it exists.
-			string newFileName = Path.GetDirectoryName(filename) + "\\" + Path.GetFileNameWithoutExtension(filename) + "." + format;
+			string newFileName = Path.GetDirectoryName(filename) + Path.DirectorySeparatorChar + Path.GetFileNameWithoutExtension(filename) + "." + format;
 			if (File.Exists(newFileName)) {
 				File.Delete(newFileName);
 			}
